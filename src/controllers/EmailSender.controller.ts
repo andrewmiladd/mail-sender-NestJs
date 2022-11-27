@@ -7,7 +7,7 @@ export class EmailSenderController {
     constructor(private mailService: EmailSendService) {}
     @Post()
     async SendingEmail(@Body() toEmail: EmailDto) {
-        const response = await this.mailService.singleMail(toEmail.email);
+        const response = await this.mailService.singleMail(toEmail.email, toEmail.message);
         return response;
     }
 }
