@@ -5,6 +5,10 @@ import { AppService } from "./services/app.service";
 import { ConfigModule } from "@nestjs/config";
 import { EmailSenderController } from "./controllers/EmailSender.controller";
 import { EmailSendService } from "./services/EmailSender.service";
+import { MongooseModule } from "@nestjs/mongoose";
+import { UserSchema } from "./models/users.model";
+import { UserController } from "./controllers/users.controller";
+import { UserServices } from "./services/users.service";
 @Module({
     imports: [
         ConfigModule.forRoot(),
@@ -17,8 +21,10 @@ import { EmailSendService } from "./services/EmailSender.service";
                 },
             },
         }),
+        MongooseModule.forRoot(process.env.MY_MONGODB),
+        MongooseModule.forFeature([{ name: "users", schema: UserSchema }]),
     ],
-    controllers: [AppController, EmailSenderController],
-    providers: [AppService, EmailSendService],
+    controllers: [AppController, EmailSenderController, UserController],
+    providers: [AppService, EmailSendService, UserServices],
 })
 export class AppModule {}
