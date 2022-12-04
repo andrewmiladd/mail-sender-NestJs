@@ -1,8 +1,8 @@
-import { Controller, Post, Body, Get } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param } from "@nestjs/common";
 import { CreateUserDto } from "src/DTO/CreateUser.dto";
 import { UserServices } from "src/services/users.service";
 
-@Controller("createUser")
+@Controller("users")
 export class UserController {
     constructor(private userServices: UserServices) {}
     @Post()
@@ -14,5 +14,10 @@ export class UserController {
     async getAllUsers() {
         const allUsers = await this.userServices.getAllUsers();
         return allUsers;
+    }
+    @Get(":one")
+    async getOneUser(@Param("one") email: string) {
+        const user = await this.userServices.getOneUser(email);
+        return user;
     }
 }
