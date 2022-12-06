@@ -25,8 +25,8 @@ export class UserServices {
         const allUsers = this.userModel.find();
         return allUsers;
     }
-    async getOneUser(email: string) {
-        const user = await this.userModel.findOne({ email });
+    async getOneUser(query: object) {
+        const user = await this.userModel.findOne(query);
         return user;
     }
 }

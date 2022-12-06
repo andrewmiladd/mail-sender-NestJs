@@ -1,12 +1,20 @@
-import { Controller, Post, Body, Get, Param } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, UseGuards, Request } from "@nestjs/common";
 import { CreateUserDto } from "src/DTO/CreateUser.dto";
 import { UserServices } from "src/services/users.service";
+import { AuthGuard } from "@nestjs/passport";
+import * as bcrypt from "bcrypt";
+import { AuthService } from "src/services/auth.service";
 
 @Controller("users")
 export class UserController {
-    constructor(private userServices: UserServices) {}
+    constructor(private userServices: UserServices, private authService: AuthService) {}
     @Post()
     async createUser(@Body() userBody: CreateUserDto) {
+        const salt = parseInt(process.env.MY_SALT);
+        const hashedPassword = await bcrypt.hash(userBody.password, salt);
+        const hashedConfirmPassword = await bcrypt.hash(userBody.confirmPassword, salt);
+        userBody.confirmPassword = hashedConfirmPassword;
+        userBody.password = hashedPassword;
         const newUser = await this.userServices.createUser(userBody);
         return newUser.username;
     }
@@ -17,7 +25,13 @@ export class UserController {
     }
     @Get(":one")
     async getOneUser(@Param("one") email: string) {
-        const user = await this.userServices.getOneUser(email);
+        const user = await this.userServices.getOneUser({ email });
         return user;
+    }
+
+    @UseGuards(AuthGuard("local"))
+    @Post("login")
+    async login(@Request() req) {
+        return this.authService.login(req.user);
     }
 }
