@@ -4,6 +4,7 @@ import { UserServices } from "src/services/users.service";
 import { AuthGuard } from "@nestjs/passport";
 import * as bcrypt from "bcrypt";
 import { AuthService } from "src/services/auth.service";
+import { LoginDto } from "src/DTO/Login.dto";
 
 @Controller("users")
 export class UserController {
@@ -31,7 +32,7 @@ export class UserController {
 
     @UseGuards(AuthGuard("local"))
     @Post("login")
-    async login(@Request() req) {
-        return this.authService.login(req.user);
+    async login(@Request() req: LoginDto) {
+        return this.authService.login(req);
     }
 }
