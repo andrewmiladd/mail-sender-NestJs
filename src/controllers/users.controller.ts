@@ -1,10 +1,8 @@
-import { Controller, Post, Body, Get, Param, UseGuards, Request } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param } from "@nestjs/common";
 import { CreateUserDto } from "src/DTO/CreateUser.dto";
 import { UserServices } from "src/services/users.service";
-import { AuthGuard } from "@nestjs/passport";
 import * as bcrypt from "bcrypt";
 import { AuthService } from "src/services/auth.service";
-import { LoginDto } from "src/DTO/Login.dto";
 
 @Controller("users")
 export class UserController {
@@ -28,11 +26,5 @@ export class UserController {
     async getOneUser(@Param("one") email: string) {
         const user = await this.userServices.getOneUser({ email });
         return user;
-    }
-
-    @UseGuards(AuthGuard("local"))
-    @Post("login")
-    async login(@Request() req: LoginDto) {
-        return this.authService.login(req);
     }
 }
