@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Get, Param } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, UseGuards } from "@nestjs/common";
 import { CreateUserDto } from "src/DTO/CreateUser.dto";
 import { UserServices } from "src/services/users.service";
 import * as bcrypt from "bcrypt";
 import { AuthService } from "src/services/auth.service";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("users")
 export class UserController {
@@ -17,6 +18,7 @@ export class UserController {
         const newUser = await this.userServices.createUser(userBody);
         return newUser.username;
     }
+    @UseGuards(AuthGuard("jwt"))
     @Get()
     async getAllUsers() {
         const allUsers = await this.userServices.getAllUsers();
@@ -24,7 +26,7 @@ export class UserController {
     }
     @Get(":one")
     async getOneUser(@Param("one") email: string) {
-        const user = await this.userServices.getOneUser({ email });
+        const user = await this.userServices.getOneUser(email);
         return user;
     }
 }

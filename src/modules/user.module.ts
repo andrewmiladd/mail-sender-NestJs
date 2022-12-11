@@ -6,9 +6,10 @@ import { UserController } from "../controllers/users.controller";
 import { UserServices } from "../services/users.service";
 import { AuthService } from "src/services/auth.service";
 import { JwtModule } from "@nestjs/jwt";
-import { LocalStrategy } from "src/local.strategy";
+import { LocalStrategy } from "src/auth/local.strategy";
 import { PassportModule } from "@nestjs/passport";
 import { AuthController } from "src/controllers/auth.controller";
+import { JwtStrategy } from "src/auth/jwt.strategy";
 @Module({
     imports: [
         ConfigModule.forRoot(),
@@ -21,7 +22,7 @@ import { AuthController } from "src/controllers/auth.controller";
         }),
     ],
 
-    providers: [UserServices, AuthService, LocalStrategy],
+    providers: [UserServices, AuthService, LocalStrategy, JwtStrategy],
     controllers: [UserController, AuthController],
 })
 export class UserModule {}
