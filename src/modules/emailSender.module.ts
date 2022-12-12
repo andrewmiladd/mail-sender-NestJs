@@ -8,7 +8,7 @@ import { ConfigModule } from "@nestjs/config";
         ConfigModule.forRoot(),
         MailerModule.forRoot({
             transport: {
-                host: "smtp.mailgun.org",
+                host: "smtp.gmail.com",
                 auth: {
                     user: process.env.MY_USER,
                     pass: process.env.MY_PASS,
