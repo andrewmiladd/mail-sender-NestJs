@@ -6,7 +6,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.useGlobalPipes(new ValidationPipe());
     app.enableCors({
-        origin: "http://localhost:3000",
+        origin: "https://mailsenderr.netlify.app/",
     });
     await app.listen(8000);
 }
