@@ -5,9 +5,7 @@ import { AppModule } from "./modules/app.module";
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.useGlobalPipes(new ValidationPipe());
-    app.enableCors({
-        origin: "https://mailsenderr.netlify.app/",
-    });
+    app.enableCors();
     await app.listen(8000);
 }
 bootstrap();
